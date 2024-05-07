@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DeckItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class DeckItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IProduct
 {
 	private const float Distance = 200.0f;
 	[SerializeField] private GameObject _back;
@@ -56,5 +56,20 @@ public class DeckItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
 	public void OnClick()
 	{
+	}
+
+	public void Show()
+	{
+		gameObject.SetActive(true);
+	}
+
+	public void Hide()
+	{
+		gameObject.SetActive(false);
+	}
+
+	public void Destroy()
+	{
+		Destroy(gameObject);
 	}
 }

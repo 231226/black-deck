@@ -6,13 +6,16 @@ using UnityEngine;
 
 public class DeckView : MonoBehaviour
 {
-	[SerializeField] private DeckItemView _item;
+	[SerializeField] private CardFactory _factory;
+	[SerializeField] private CardPool _pool;
 	[SerializeField] private Transform _playerParent;
 	[SerializeField] private Transform _enemyParent;
 	[SerializeField] private TimerView _timerView;
 	[SerializeField] private DeckList _deckList;
-	public Action<string> CardClicked;
 
+	private List<IProduct> _produtcs = new();
+
+	public Action<string> CardClicked;
 	public Action DeckCompleted;
 
 	private async void Start()
@@ -24,20 +27,45 @@ public class DeckView : MonoBehaviour
 		DeckCompleted?.Invoke();
 	}
 
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Y))
+		{
+			SpawnPlayerCardsAsync();
+		}
+
+		if (Input.GetKeyDown(KeyCode.U))
+		{
+			for (int i = 0; i < _produtcs.Count-1; i++)
+			{
+				_pool.ReleaseProduct(_produtcs[i]);
+			}
+		}
+	}
+
 	private async UniTask SpawnPlayerCardsAsync()
 	{
 		var comp = FindObjectOfType<SaveProvider>();
 		foreach (var card in _deckList)
 		{
-			if (comp.Cards.Exists(s => s.Equals(card.ID)))
+			if (!comp.GetCardState(card.ID))
 			{
-				var go = Instantiate(_item, _playerParent);
-				go.Init(card.ID, card.CardName, card.Art);
-				go.Flip();
-				go.Clicked += OnCardClicked;
-				await go.transform.DOScale(Vector3.one, 0.3f).From(Vector3.zero)
-					.WithCancellation(destroyCancellationToken);
+				continue;
 			}
+
+			var go = _factory.Create();
+			_produtcs.Add(go);
+			if (go is not DeckItemView view)
+			{
+				return;
+			}
+
+			view.transform.SetParent(_playerParent);
+			view.Init(card.ID, card.CardName, card.Art);
+			view.Flip();
+			view.Clicked += OnCardClicked;
+			await view.transform.DOScale(Vector3.one, 0.3f).From(Vector3.zero)
+				.WithCancellation(destroyCancellationToken);
 		}
 	}
 
@@ -53,9 +81,16 @@ public class DeckView : MonoBehaviour
 		for (var i = 0; i < 4; i++)
 		{
 			var card = list[i];
-			var go = Instantiate(_item, _enemyParent);
-			go.Init(card.ID, card.CardName, card.Art);
-			await go.transform.DOScale(Vector3.one, 0.5f).From(Vector3.zero).WithCancellation(destroyCancellationToken);
+			var go = _factory.Create();
+			if (go is not DeckItemView view)
+			{
+				return;
+			}
+
+			view.transform.SetParent(_enemyParent);
+			view.Init(card.ID, card.CardName, card.Art);
+			await view.transform.DOScale(Vector3.one, 0.5f).From(Vector3.zero)
+				.WithCancellation(destroyCancellationToken);
 		}
 	}
 }

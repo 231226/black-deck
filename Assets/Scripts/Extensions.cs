@@ -5,14 +5,10 @@ public static class Extensions
 {
 	public static void Shuffle<T>(this IList<T> ts)
 	{
-		var count = ts.Count;
-		var last = count - 1;
-		for (var i = 0; i < last; ++i)
+		for (int i = 0, count = ts.Count, last = count - 1; i != last; ++i)
 		{
-			var r = Random.Range(i, count);
-			var tmp = ts[i];
-			ts[i] = ts[r];
-			ts[r] = tmp;
+			var rnd = Random.Range(i, count);
+			(ts[i], ts[rnd]) = (ts[rnd], ts[i]);
 		}
 	}
 }
