@@ -5,6 +5,7 @@ public class DeckController : MonoBehaviour
 	[SerializeField] private TimerView _timer;
 	[SerializeField] private DeckView _deck;
 	[SerializeField] private CardLine _cardLine;
+	[SerializeField] private GameStateMachine _stateMachine;
 
 	private void Start()
 	{
@@ -26,5 +27,6 @@ public class DeckController : MonoBehaviour
 	private void OnCardClicked(string id)
 	{
 		_cardLine.SpawnCard();
+		_stateMachine.SwitchState(GameState.BotTurn);
 	}
 }

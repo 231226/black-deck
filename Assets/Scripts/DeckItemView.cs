@@ -14,6 +14,7 @@ public class DeckItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 	private string _id;
 
 	private Vector3 _startPosition;
+	private GameStateMachine _fsm;
 
 	public void OnBeginDrag(PointerEventData eventData)
 	{
@@ -29,7 +30,7 @@ public class DeckItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
 	public void OnEndDrag(PointerEventData eventData)
 	{
-		if (eventData.position.y - _startPosition.y > Distance)
+		if (eventData.position.y - _startPosition.y > Distance && _fsm.Current == GameState.PlayerTurn)
 		{
 			Clicked?.Invoke(_id);
 			Destroy(gameObject);
@@ -66,6 +67,11 @@ public class DeckItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 	public void Hide()
 	{
 		gameObject.SetActive(false);
+	}
+
+	public void Inject(GameStateMachine fsm)
+	{
+		_fsm = fsm;
 	}
 
 	public void Destroy()

@@ -1,14 +1,18 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 namespace MVP
 {
-	public class View : MonoBehaviour
+	public class View : MonoBehaviour, IObservable
 	{
 		[SerializeField] private TMP_Text _numberLabel;
 
 		private IDisposable _presenter;
+		private List<IObserver> _observers = new();
+
+		public event Action SubtractClicked;
 
 		private void Start()
 		{
@@ -20,8 +24,6 @@ namespace MVP
 			_presenter.Dispose();
 		}
 
-		public event Action Clicked;
-
 		public void SetValue(string value)
 		{
 			_numberLabel.SetText(value);
@@ -29,7 +31,30 @@ namespace MVP
 
 		public void OnClick()
 		{
-			Clicked?.Invoke();
+			Notify();
+		}
+		
+		public void OnSubtractClick()
+		{
+			SubtractClicked?.Invoke();
+		}
+
+		public void Add(IObserver o)
+		{
+			_observers.Add(o);
+		}
+
+		public void Remove(IObserver o)
+		{
+			_observers.Remove(o);
+		}
+
+		public void Notify()
+		{
+			foreach (var o in _observers)
+			{
+				o.Handle();
+			}
 		}
 	}
 }

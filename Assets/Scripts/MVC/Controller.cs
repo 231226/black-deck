@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MVC
 {
-	public class Controller : MonoBehaviour
+	public class Controller : MonoBehaviour, IObserver<int>
 	{
 		[SerializeField] private View _view;
 
@@ -13,15 +13,20 @@ namespace MVC
 		{
 			_model = new Model();
 			_view.SetModel(_model);
-			_view.Clicked += OnViewClicked;
+			_view.Subscribe(this);
 		}
 
-		private void OnDestroy()
+		public void OnCompleted()
 		{
-			_view.Clicked -= OnViewClicked;
+			
 		}
 
-		private void OnViewClicked()
+		public void OnError(Exception error)
+		{
+			
+		}
+
+		public void OnNext(int value)
 		{
 			_model.Current++;
 		}

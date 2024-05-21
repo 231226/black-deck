@@ -14,8 +14,8 @@ public class Model
 				return;
 			}
 
-			DataChanged?.Invoke();
 			_current = value;
+			DataChanged?.Invoke();
 		}
 	}
 
