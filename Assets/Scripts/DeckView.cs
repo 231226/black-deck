@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DeckView : MonoBehaviour
 {
@@ -13,7 +14,8 @@ public class DeckView : MonoBehaviour
 	[SerializeField] private TimerView _timerView;
 	[SerializeField] private DeckList _deckList;
 
-	private List<IProduct> _produtcs = new();
+	private List<DeckItemView> _produtcs = new();
+	
 
 	public Action<string> CardClicked;
 	public Action DeckCompleted;
@@ -54,7 +56,8 @@ public class DeckView : MonoBehaviour
 			}
 
 			var go = _factory.Create();
-			_produtcs.Add(go);
+			_produtcs.Add(go as DeckItemView);
+			
 			if (go is not DeckItemView view)
 			{
 				return;
@@ -69,9 +72,10 @@ public class DeckView : MonoBehaviour
 		}
 	}
 
-	private void OnCardClicked(string id)
+	private void OnCardClicked(DeckItemView view)
 	{
-		CardClicked?.Invoke(id);
+		CardClicked?.Invoke(view.ID);
+		Destroy(view.gameObject);
 	}
 
 	private async UniTask SpawnEnemyCardsAsync()
@@ -92,5 +96,16 @@ public class DeckView : MonoBehaviour
 			await view.transform.DOScale(Vector3.one, 0.5f).From(Vector3.zero)
 				.WithCancellation(destroyCancellationToken);
 		}
+	}
+
+	public void SpawnRandomCard()
+	{
+		var index = Random.Range(0, _produtcs.Count);
+		var view = _produtcs[index];
+		CardClicked?.Invoke(view.ID);
+		Destroy(view.gameObject);
+		_produtcs.RemoveAt(index);
+		
+
 	}
 }

@@ -6,9 +6,18 @@ using UnityEngine;
 public class TimerView : MonoBehaviour
 {
 	[SerializeField] private TMP_Text _label;
-	[SerializeField] private float _time;
+	[SerializeField] private float _initialTime;
 
+	public event Action TimeWaseGone;
+		
 	private bool _isRunning = true;
+
+	private float _carrentTime;
+
+	private void Start()
+	{
+		_carrentTime = _initialTime;
+	}
 
 	public void StartCountdown()
 	{
@@ -30,17 +39,29 @@ public class TimerView : MonoBehaviour
 
 	private IEnumerator TimerCoroutine()
 	{
-		while (!float.IsNegative(_time))
+		
+		
+		while (!float.IsNegative(_carrentTime))
 		{
-			var time = TimeSpan.FromSeconds(_time);
+			var time = TimeSpan.FromSeconds(_carrentTime);
 			_label.SetText(time.ToString("m':'ss"));
 			yield return new WaitForSeconds(1.0f);
 			if (_isRunning)
 			{
-				_time -= 1.0f;
+				_carrentTime -= 1.0f;
 			}
 		}
 
+		TimeWaseGone?.Invoke();
+		
 		_label.SetText("Time is gone");
+		RestartTimer();
+	}
+
+	public void RestartTimer()
+	{
+		StopAllCoroutines();
+		_carrentTime = _initialTime;
+		StartCoroutine(TimerCoroutine());
 	}
 }
