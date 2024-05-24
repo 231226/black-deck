@@ -16,3 +16,4 @@ MonoBehaviour:
   _cardName: I love craft
   _art: {fileID: 21300000, guid: a34152849c17f034ba72e3b4715b2797, type: 3}
   _rarity: 0
+  _power: 10

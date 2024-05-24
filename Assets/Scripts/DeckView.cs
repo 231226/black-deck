@@ -63,7 +63,7 @@ public class DeckView : MonoBehaviour
 
 			_playerDeckItemViews.Add(view);
 			view.transform.SetParent(_playerParent);
-			view.Init(card.ID, card.CardName, card.Art);
+			view.Init(card.ID, card.CardName, card.Art, card.Power);
 			view.Flip();
 			view.Clicked += OnCardClicked;
 			await view.transform.DOScale(Vector3.one, 0.3f).From(Vector3.zero)
@@ -91,7 +91,7 @@ public class DeckView : MonoBehaviour
 
 			_enemyDeckItemViews.Add(view);
 			view.transform.SetParent(_enemyParent);
-			view.Init(card.ID, card.CardName, card.Art);
+			view.Init(card.ID, card.CardName, card.Art, card.Power);
 			await view.transform.DOScale(Vector3.one, 0.5f).From(Vector3.zero)
 				.WithCancellation(destroyCancellationToken);
 		}

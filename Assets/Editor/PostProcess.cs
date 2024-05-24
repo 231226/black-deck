@@ -1,6 +1,11 @@
 using System;
 using UnityEditor;
 using UnityEditor.Callbacks;
+
+#if UNITY_IOS
+
+
+
 using UnityEditor.iOS.Xcode;
 
 public class PostProcess
@@ -28,4 +33,6 @@ public class PostProcess
 			plist.WriteToFile(plistPath);
 		}
 	}
+
 }
+#endif

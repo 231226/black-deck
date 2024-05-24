@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 public class BotBehaviour : MonoBehaviour
@@ -6,6 +7,7 @@ public class BotBehaviour : MonoBehaviour
 	[SerializeField] private CardLine _cardLine;
 	[SerializeField] private GameStateMachine _stateMachine;
 	[SerializeField] private DeckView _deckView;
+	[SerializeField] private TMP_Text _enemyPower;
 
 	private void Start()
 	{
@@ -26,6 +28,7 @@ public class BotBehaviour : MonoBehaviour
 		}
 
 		_cardLine.SpawnCard(_deckView.SpawnEnemyCard());
+		_enemyPower.SetText(_cardLine.CurrentPower.ToString());
 		_stateMachine.SwitchState(GameState.PlayerTurn);
 	}
 }

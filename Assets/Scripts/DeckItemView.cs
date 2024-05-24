@@ -10,6 +10,7 @@ public class DeckItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 	[SerializeField] private GameObject _back;
 	[SerializeField] private TMP_Text _title;
 	[SerializeField] private Image _art;
+	[SerializeField] private TMP_Text _power;
 
 	private string _id;
 
@@ -43,11 +44,12 @@ public class DeckItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
 	public event Action<DeckItemView> Clicked;
 
-	public void Init(string id, string title, Sprite art)
+	public void Init(string id, string title, Sprite art, int power)
 	{
 		_id = id;
 		_title.SetText(title);
 		_art.overrideSprite = art;
+		_power.SetText(power.ToString());
 	}
 
 	public void Flip()
