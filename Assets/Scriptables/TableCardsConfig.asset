@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c6c81a239de4880a8a4323dcb11d624, type: 3}
+  m_Name: TableCardsConfig
+  m_EditorClassIdentifier: 
+  _pairs:
+  - _id: beast
+    _cardTexture: {fileID: 2800000, guid: f598755aa13094649b56f8ec37c94978, type: 3}
+  - _id: ctulhu
+    _cardTexture: {fileID: 2800000, guid: a34152849c17f034ba72e3b4715b2797, type: 3}
+  - _id: dragon
+    _cardTexture: {fileID: 2800000, guid: 34debc8f5e665a44c823915fbba00a9a, type: 3}
+  - _id: satan
+    _cardTexture: {fileID: 2800000, guid: dc0c719fcbb803b4896742b41bfb15a0, type: 3}
+  - _id: slug
+    _cardTexture: {fileID: 2800000, guid: 5a43e25abedf90949b378bf79adf9625, type: 3}
+  - _id: stitch
+    _cardTexture: {fileID: 2800000, guid: fc45b8d11269d4d4bb8c1de58d3ba832, type: 3}

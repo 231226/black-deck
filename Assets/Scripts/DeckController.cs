@@ -5,12 +5,7 @@ public class DeckController : MonoBehaviour
 	[SerializeField] private TimerView _timer;
 	[SerializeField] private DeckView _deck;
 	[SerializeField] private CardLine _cardLine;
-<<<<<<< Updated upstream
 	[SerializeField] private GameStateMachine _stateMachine;
-=======
-	
-	
->>>>>>> Stashed changes
 
 	private void Start()
 	{
@@ -38,7 +33,7 @@ public class DeckController : MonoBehaviour
 
 	private void OnCardClicked(string id)
 	{
-		_cardLine.SpawnCard();
+		_cardLine.SpawnCard(id);
 		_stateMachine.SwitchState(GameState.BotTurn);
 	}
 }

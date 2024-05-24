@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CardLine : MonoBehaviour
 {
-	[SerializeField] private GameObject _prefab;
+	[SerializeField] private CardView _view;
 	[SerializeField] private int _xPosMin = -3;
 	[SerializeField] private int _xPosMax = 2;
 
@@ -14,9 +14,10 @@ public class CardLine : MonoBehaviour
 		_current = _xPosMin;
 	}
 
-	public void SpawnCard()
+	public void SpawnCard(string id)
 	{
-		var go = Instantiate(_prefab, transform);
+		var go = Instantiate(_view, transform);
+		go.Init(id);
 		var tmp = go.transform.position;
 		tmp.x = _current;
 		go.transform.position = tmp;

@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -6,6 +5,7 @@ public class BotBehaviour : MonoBehaviour
 {
 	[SerializeField] private CardLine _cardLine;
 	[SerializeField] private GameStateMachine _stateMachine;
+	[SerializeField] private DeckView _deckView;
 
 	private void Start()
 	{
@@ -17,7 +17,7 @@ public class BotBehaviour : MonoBehaviour
 		_stateMachine.StateChanged -= Spawn;
 	}
 
-	public async void Spawn()
+	private async void Spawn()
 	{
 		await UniTask.Delay(1000);
 		if (_stateMachine.Current == GameState.PlayerTurn)
@@ -25,7 +25,7 @@ public class BotBehaviour : MonoBehaviour
 			return;
 		}
 
-		_cardLine.SpawnCard();
+		_cardLine.SpawnCard(_deckView.SpawnEnemyCard());
 		_stateMachine.SwitchState(GameState.PlayerTurn);
 	}
 }

@@ -14,8 +14,8 @@ public class DeckView : MonoBehaviour
 	[SerializeField] private TimerView _timerView;
 	[SerializeField] private DeckList _deckList;
 
-	private List<DeckItemView> _produtcs = new();
-	
+	private readonly List<DeckItemView> _enemyDeckItemViews = new();
+	private readonly List<DeckItemView> _playerDeckItemViews = new();
 
 	public Action<string> CardClicked;
 	public Action DeckCompleted;
@@ -38,9 +38,9 @@ public class DeckView : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.U))
 		{
-			for (int i = 0; i < _produtcs.Count-1; i++)
+			for (var i = 0; i < _playerDeckItemViews.Count - 1; i++)
 			{
-				_pool.ReleaseProduct(_produtcs[i]);
+				_pool.ReleaseProduct(_playerDeckItemViews[i]);
 			}
 		}
 	}
@@ -56,13 +56,12 @@ public class DeckView : MonoBehaviour
 			}
 
 			var go = _factory.Create();
-			_produtcs.Add(go as DeckItemView);
-			
 			if (go is not DeckItemView view)
 			{
 				return;
 			}
 
+			_playerDeckItemViews.Add(view);
 			view.transform.SetParent(_playerParent);
 			view.Init(card.ID, card.CardName, card.Art);
 			view.Flip();
@@ -74,8 +73,7 @@ public class DeckView : MonoBehaviour
 
 	private void OnCardClicked(DeckItemView view)
 	{
-		CardClicked?.Invoke(view.ID);
-		Destroy(view.gameObject);
+		SpawnCard(view.ID);
 	}
 
 	private async UniTask SpawnEnemyCardsAsync()
@@ -91,6 +89,7 @@ public class DeckView : MonoBehaviour
 				return;
 			}
 
+			_enemyDeckItemViews.Add(view);
 			view.transform.SetParent(_enemyParent);
 			view.Init(card.ID, card.CardName, card.Art);
 			await view.transform.DOScale(Vector3.one, 0.5f).From(Vector3.zero)
@@ -100,12 +99,40 @@ public class DeckView : MonoBehaviour
 
 	public void SpawnRandomCard()
 	{
-		var index = Random.Range(0, _produtcs.Count);
-		var view = _produtcs[index];
+		if (_playerDeckItemViews.Count <= 0)
+		{
+			return;
+		}
+
+		var index = Random.Range(0, _playerDeckItemViews.Count);
+		SpawnCard(_playerDeckItemViews[index].ID);
+	}
+
+	public string SpawnEnemyCard()
+	{
+		if (_enemyDeckItemViews.Count <= 0)
+		{
+			return string.Empty;
+		}
+
+		var index = Random.Range(0, _enemyDeckItemViews.Count);
+		var view = _enemyDeckItemViews[index];
+		Destroy(view.gameObject);
+		_enemyDeckItemViews.RemoveAt(index);
+		return view.ID;
+	}
+
+	private void SpawnCard(string id)
+	{
+		if (_playerDeckItemViews.Count <= 0)
+		{
+			return;
+		}
+
+		var index = _playerDeckItemViews.FindIndex(itemView => itemView.ID.Equals(id));
+		var view = _playerDeckItemViews[index];
 		CardClicked?.Invoke(view.ID);
 		Destroy(view.gameObject);
-		_produtcs.RemoveAt(index);
-		
-
+		_playerDeckItemViews.RemoveAt(index);
 	}
 }
