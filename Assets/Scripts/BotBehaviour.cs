@@ -6,7 +6,7 @@ public class BotBehaviour : MonoBehaviour
 {
 	[SerializeField] private CardLine _cardLine;
 	[SerializeField] private GameStateMachine _stateMachine;
-	[SerializeField] private DeckView _deckView;
+	[SerializeField] private EnemyDeckView _deckView;
 	[SerializeField] private TMP_Text _enemyPower;
 
 	private void Start()
