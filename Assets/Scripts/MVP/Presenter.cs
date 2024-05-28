@@ -8,7 +8,7 @@ namespace MVP
 		private readonly Model _model;
 		private readonly View _view;
 
-		private Stack<ICommand> _commands = new();
+		private readonly Stack<ICommand> _commands = new();
 
 		public Presenter(View view)
 		{
@@ -20,11 +20,6 @@ namespace MVP
 			_model.DataChanged += OnModelDataChanged;
 		}
 
-		private void OnViewUndoClicked()
-		{
-			_model.Current = _commands.Pop().Undo();
-		}
-
 		public void Dispose()
 		{
 			_view.Remove(this);
@@ -32,16 +27,21 @@ namespace MVP
 			_model.DataChanged -= OnModelDataChanged;
 		}
 
-		private void OnModelDataChanged()
-		{
-			_view.SetValue(_model.Current.ToString());
-		}
-
 		public void Handle()
 		{
 			var cmd = new AddCommand(_model.Current, 1);
 			_commands.Push(cmd);
 			_model.Current = cmd.Execute();
+		}
+
+		private void OnViewUndoClicked()
+		{
+			_model.Current = _commands.Pop().Undo();
+		}
+
+		private void OnModelDataChanged()
+		{
+			_view.SetValue(_model.Current.ToString());
 		}
 	}
 }

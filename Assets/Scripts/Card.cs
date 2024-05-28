@@ -13,10 +13,7 @@ public class Card : ScriptableObject
 	public string CardName => _cardName;
 	public Sprite Art => _art;
 
-	public int Power
-	{
-		get { return _power; }
-	}
+	public int Power => _power;
 }
 
 public enum CardRarity

@@ -1,14 +1,19 @@
 using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Game;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DeckView : MonoBehaviour
 {
 	[SerializeField] protected CardFactory _factory;
-	[SerializeField] private CardPool _pool;
 	[SerializeField] private TimerView _timerView;
-	[SerializeField] protected DeckList _deckList;
+
+	[FormerlySerializedAs("_deckList")] [SerializeField]
+	protected CardList _cardList;
+
+	[SerializeField] private CardPool _pool;
 
 	public Action<string> CardClicked;
 	public Action DeckCompleted;
@@ -24,7 +29,7 @@ public class DeckView : MonoBehaviour
 	{
 	}
 
-	protected void OnCardClicked(DeckItemView view)
+	protected void OnCardDragEnded(HandItemView view)
 	{
 		SpawnCard(view.ID);
 	}

@@ -17,7 +17,8 @@ public class ImageLoader : MonoBehaviour
 
 	private async UniTask<Texture2D> DownloadTexture()
 	{
-		var request = await UnityWebRequestTexture.GetTexture(_url).SendWebRequest().WithCancellation(destroyCancellationToken);
+		var request = await UnityWebRequestTexture.GetTexture(_url).SendWebRequest()
+			.WithCancellation(destroyCancellationToken);
 		var texture = DownloadHandlerTexture.GetContent(request);
 		return texture;
 	}

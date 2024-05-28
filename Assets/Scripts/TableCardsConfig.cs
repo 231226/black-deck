@@ -8,12 +8,13 @@ public class TableCardsConfig : ScriptableObject
 
 	public Texture GetTextureById(string id)
 	{
-		IdTexturePair pair = Array.Find(_pairs, pair => pair.ID.Equals(id));
+		var pair = Array.Find(_pairs, pair => pair.ID.Equals(id));
 		if (pair is null)
 		{
 			Debug.LogError($"Some troubles with id: {id}");
 			return null;
 		}
+
 		return pair.CardTexture;
 	}
 }

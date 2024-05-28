@@ -8,11 +8,9 @@ namespace MVP
 	public class View : MonoBehaviour, IObservable
 	{
 		[SerializeField] private TMP_Text _numberLabel;
+		private readonly List<IObserver> _observers = new();
 
 		private IDisposable _presenter;
-		private List<IObserver> _observers = new();
-
-		public event Action SubtractClicked;
 
 		private void Start()
 		{
@@ -22,21 +20,6 @@ namespace MVP
 		private void OnDestroy()
 		{
 			_presenter.Dispose();
-		}
-
-		public void SetValue(string value)
-		{
-			_numberLabel.SetText(value);
-		}
-
-		public void OnClick()
-		{
-			Notify();
-		}
-		
-		public void OnSubtractClick()
-		{
-			SubtractClicked?.Invoke();
 		}
 
 		public void Add(IObserver o)
@@ -55,6 +38,23 @@ namespace MVP
 			{
 				o.Handle();
 			}
+		}
+
+		public event Action SubtractClicked;
+
+		public void SetValue(string value)
+		{
+			_numberLabel.SetText(value);
+		}
+
+		public void OnClick()
+		{
+			Notify();
+		}
+
+		public void OnSubtractClick()
+		{
+			SubtractClicked?.Invoke();
 		}
 	}
 }

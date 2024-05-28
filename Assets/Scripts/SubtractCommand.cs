@@ -1,7 +1,7 @@
 public class SubtractCommand : ICommand
 {
-	private int _origin;
-	private int _value;
+	private readonly int _origin;
+	private readonly int _value;
 
 	public SubtractCommand(int origin, int value)
 	{

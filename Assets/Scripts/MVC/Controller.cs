@@ -18,12 +18,10 @@ namespace MVC
 
 		public void OnCompleted()
 		{
-			
 		}
 
 		public void OnError(Exception error)
 		{
-			
 		}
 
 		public void OnNext(int value)
