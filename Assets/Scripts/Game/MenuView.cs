@@ -9,10 +9,6 @@ namespace Game
 {
 	public class MenuView : MonoBehaviour
 	{
-		private const string GameParam = "GameVolume";
-		private const string MusicParam = "MusicVolume";
-		private const string UIParam = "UIVolume";
-
 		private const string VolumeGameParamKey = "GameVolumeKey";
 		private const string VolumeMusicParamKey = "MusicVolumeKey";
 		private const string VolumeUIParamKey = "UIVolumeKey";
@@ -20,13 +16,6 @@ namespace Game
 		[SerializeField] private AudioMixer _mixer;
 		[SerializeField] private TMP_Text _clipboardText;
 		[SerializeField] private HandController _handController;
-
-		private void OnEnable()
-		{
-			_clipboardText.SetText(_handController.Clipboard.Get());
-		}
-
-		public event Action ExitButtonClicked;
 		[SerializeField] private Slider _gameVolumeSlider;
 		[SerializeField] private Slider _uiVolumeSlider;
 		[SerializeField] private Slider _musicVolumeSlider;
@@ -40,6 +29,13 @@ namespace Game
 			_uiVolumeSlider.value = _currentVolume.UI;
 			_musicVolumeSlider.value = _currentVolume.Music;
 		}
+
+		private void OnEnable()
+		{
+			_clipboardText.SetText(_handController.Clipboard.Get());
+		}
+
+		public event Action ExitButtonClicked;
 
 		public void OnMuteClick()
 		{
@@ -58,7 +54,6 @@ namespace Game
 		public void OnUISliderValueChanged(float value)
 		{
 			_mixer.SetFloat(Constants.UIParam, value);
-			
 			_currentVolume.UI = value;
 			Save();
 		}
@@ -66,7 +61,6 @@ namespace Game
 		public void OnMusicSliderValueChanged(float value)
 		{
 			_mixer.SetFloat(Constants.MusicParam, value);
-			
 			_currentVolume.Music = value;
 			Save();
 		}
@@ -87,24 +81,10 @@ namespace Game
 		private Volume Load()
 		{
 			return new Volume(
-				PlayerPrefs.GetFloat(VolumeGameParamKey, 1.0f),
-				PlayerPrefs.GetFloat(VolumeUIParamKey, 1.0f),
-				PlayerPrefs.GetFloat(VolumeMusicParamKey, 1.0f)
+				PlayerPrefs.GetFloat(VolumeGameParamKey, 0.0f),
+				PlayerPrefs.GetFloat(VolumeUIParamKey, 0.0f),
+				PlayerPrefs.GetFloat(VolumeMusicParamKey, 0.0f)
 			);
 		}
-	}
-
-	public struct Volume
-	{
-		public Volume(float game, float ui, float music)
-		{
-			Game = game;
-			UI = ui;
-			Music = music;
-		}
-
-		public float Game { get; set; }
-		public float UI { get; set; }
-		public float Music { get; set; }
 	}
 }
