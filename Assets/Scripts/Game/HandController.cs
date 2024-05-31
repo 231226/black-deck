@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Kernel;
 using UnityEngine;
 using Utils;
+using Utils.Clipboard;
 
 namespace Game
 {
@@ -18,11 +19,15 @@ namespace Game
 		[SerializeField] private CardList _cardList;
 		[SerializeField] private HandView _view;
 		[SerializeField] private HandSide _side;
-
+		
+		private ClipboardController _clipboard;
 		private HandModel _model;
+
+		public ClipboardController Clipboard => _clipboard;
 
 		private void Start()
 		{
+			_clipboard = new ClipboardController();
 			_model = new HandModel();
 			_view.SetModel(_model);
 			SpawnCards();
@@ -74,6 +79,8 @@ namespace Game
 			Destroy(view.gameObject);
 
 			HandItemWithIdRemoved?.Invoke(view.ID);
+
+			_clipboard.Set(view.ID);
 		}
 	}
 }
