@@ -4925,6 +4925,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mixer: {fileID: 24100000, guid: 6279665f9259a4292bd3599de9c55fb9, type: 2}
+  _gameVolumeSlider: {fileID: 2012700638}
+  _uiVolumeSlider: {fileID: 521698191}
+  _musicVolumeSlider: {fileID: 142219592}
   _clipboardText: {fileID: 935419255}
   _handController: {fileID: 1077115897}
 --- !u!114 &1542672815
