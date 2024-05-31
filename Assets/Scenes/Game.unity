@@ -4275,6 +4275,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mixer: {fileID: 24100000, guid: 6279665f9259a4292bd3599de9c55fb9, type: 2}
+  _gameVolumeSlider: {fileID: 2012700638}
+  _uiVolumeSlider: {fileID: 521698191}
+  _musicVolumeSlider: {fileID: 142219592}
 --- !u!4 &1552915823 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4860115468013260, guid: 1e34067b5fa7fe344ba6f9221220c9fc,
