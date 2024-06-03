@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Kernel;
 
-namespace MVP
+namespace Utils.MVP
 {
 	public class Presenter : IDisposable, IObserver
 	{

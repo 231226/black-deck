@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Kernel;
 using TMPro;
 using UnityEngine;
 
-namespace MVP
+namespace Utils.MVP
 {
 	public class View : MonoBehaviour, IObservable
 	{

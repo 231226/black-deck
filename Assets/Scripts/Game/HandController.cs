@@ -19,21 +19,21 @@ namespace Game
 		[SerializeField] private CardList _cardList;
 		[SerializeField] private HandView _view;
 		[SerializeField] private HandSide _side;
-		
-		private ClipboardController _clipboard;
+
 		private HandModel _model;
 
-		public ClipboardController Clipboard => _clipboard;
+		public ClipboardController Clipboard { get; private set; }
 
 		private void Start()
 		{
-			_clipboard = new ClipboardController();
+			Clipboard = new ClipboardController();
 			_model = new HandModel();
 			_view.SetModel(_model);
 			SpawnCards();
 		}
 
 		public event Action<string> HandItemWithIdRemoved;
+		public event Action CameOutOfCards;
 
 		private void SpawnCards()
 		{
@@ -80,7 +80,33 @@ namespace Game
 
 			HandItemWithIdRemoved?.Invoke(view.ID);
 
-			_clipboard.Set(view.ID);
+			Clipboard.Set(view.ID);
+
+			if (_model.IsOut)
+			{
+				CameOutOfCards?.Invoke();
+			}
+		}
+
+		public void DrawRandomCard()
+		{
+			var view = _model.Random;
+			if (!_model.TryToRemoveCard(view))
+			{
+				return;
+			}
+
+			view.DragEnded -= OnCardDragEnded;
+			Destroy(view.gameObject);
+
+			HandItemWithIdRemoved?.Invoke(view.ID);
+
+			Clipboard.Set(view.ID);
+
+			if (_model.IsOut)
+			{
+				CameOutOfCards?.Invoke();
+			}
 		}
 	}
 }

@@ -15,7 +15,6 @@ namespace Game
 
 		[SerializeField] private AudioMixer _mixer;
 		[SerializeField] private TMP_Text _clipboardText;
-		[SerializeField] private HandController _handController;
 		[SerializeField] private Slider _gameVolumeSlider;
 		[SerializeField] private Slider _uiVolumeSlider;
 		[SerializeField] private Slider _musicVolumeSlider;
@@ -28,11 +27,6 @@ namespace Game
 			_gameVolumeSlider.value = _currentVolume.Game;
 			_uiVolumeSlider.value = _currentVolume.UI;
 			_musicVolumeSlider.value = _currentVolume.Music;
-		}
-
-		private void OnEnable()
-		{
-			_clipboardText.SetText(_handController.Clipboard.Get());
 		}
 
 		public event Action ExitButtonClicked;

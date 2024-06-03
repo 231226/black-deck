@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace MVC
+namespace Utils.MVC
 {
 	public class Controller : MonoBehaviour, IObserver<int>
 	{

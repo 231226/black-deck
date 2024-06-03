@@ -3,63 +3,66 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class TimerView : MonoBehaviour
+namespace Game
 {
-	[SerializeField] private TMP_Text _label;
-	[SerializeField] private float _initialTime;
-
-	private float _carrentTime;
-
-	private bool _isRunning = true;
-
-	private void Start()
+	public class TimerView : MonoBehaviour
 	{
-		_carrentTime = _initialTime;
-	}
+		[SerializeField] private TMP_Text _label;
+		[SerializeField] private float _initialTime;
 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		private float _currentTime;
+
+		private bool _isRunning = true;
+
+		private void Start()
 		{
-			_isRunning = !_isRunning;
+			_currentTime = _initialTime;
 		}
-	}
 
-	private void OnDestroy()
-	{
-		StopAllCoroutines();
-	}
-
-	public event Action TimeWaseGone;
-
-	public void StartCountdown()
-	{
-		StartCoroutine(TimerCoroutine());
-	}
-
-	private IEnumerator TimerCoroutine()
-	{
-		while (!float.IsNegative(_carrentTime))
+		private void Update()
 		{
-			var time = TimeSpan.FromSeconds(_carrentTime);
-			_label.SetText(time.ToString("m':'ss"));
-			yield return new WaitForSeconds(1.0f);
-			if (_isRunning)
+			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				_carrentTime -= 1.0f;
+				_isRunning = !_isRunning;
 			}
 		}
 
-		TimeWaseGone?.Invoke();
+		private void OnDestroy()
+		{
+			StopAllCoroutines();
+		}
 
-		_label.SetText("Time is gone");
-		RestartTimer();
-	}
+		public event Action CameOutOfTime;
 
-	public void RestartTimer()
-	{
-		StopAllCoroutines();
-		_carrentTime = _initialTime;
-		StartCoroutine(TimerCoroutine());
+		public void StartCountdown()
+		{
+			StartCoroutine(TimerCoroutine());
+		}
+
+		private IEnumerator TimerCoroutine()
+		{
+			while (!float.IsNegative(_currentTime))
+			{
+				var time = TimeSpan.FromSeconds(_currentTime);
+				_label.SetText(time.ToString("m':'ss"));
+				yield return new WaitForSeconds(1.0f);
+				if (_isRunning)
+				{
+					_currentTime -= 1.0f;
+				}
+			}
+
+			CameOutOfTime?.Invoke();
+
+			_label.SetText("Time is gone");
+			RestartTimer();
+		}
+
+		public void RestartTimer()
+		{
+			StopAllCoroutines();
+			_currentTime = _initialTime;
+			StartCoroutine(TimerCoroutine());
+		}
 	}
 }

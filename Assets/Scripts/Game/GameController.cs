@@ -1,34 +1,48 @@
+using System.Linq;
+using Kernel;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game
 {
 	public class GameController : MonoBehaviour
 	{
-		[SerializeField] private HandController _playerHandController;
-		[SerializeField] private TableController _playerTableController;
+		[SerializeField] private HandTableMediator[] _handTableMediators;
+
+		private GameStateMachine _stateMachine;
 
 		private void Start()
 		{
-			_playerHandController.HandItemWithIdRemoved += _playerTableController.AddCardById;
+			_stateMachine = new GameStateMachine(GameState.PlayerTurn);
+
+			foreach (var mediator in _handTableMediators)
+			{
+				mediator.CameOutOfCardsInHand += OnCameOutOfCardsInHand;
+				mediator.TurnFinished += OnTurnFinished;
+			}
 		}
 
 		private void OnDestroy()
 		{
-			_playerHandController.HandItemWithIdRemoved -= _playerTableController.AddCardById;
+			foreach (var mediator in _handTableMediators)
+			{
+				mediator.CameOutOfCardsInHand -= OnCameOutOfCardsInHand;
+				mediator.TurnFinished -= OnTurnFinished;
+			}
 		}
 
-		private void CheckGameIsOver()
+		private void OnCameOutOfCardsInHand()
 		{
-			// if (_playerTableController.CurrentPower >= _enemyTableController.CurrentPower)
-			// {
-			// 	Debug.LogWarning("<color=green>PLAYER WINS</color>");
-			// }
-			// else
-			// {
-			// 	Debug.LogWarning("<color=green>ENEMY WINS</color>");
-			// }
-			//
-			// SceneManager.LoadScene(Constants.MetaSceneName);
+			var winner = _handTableMediators.OrderBy(mediator => mediator.Power).First();
+			Debug.LogWarning($"<color=green>{winner.Nickname} WINS</color>");
+			SceneManager.LoadScene(Constants.MetaSceneName);
+		}
+
+		private void OnTurnFinished()
+		{
+			_stateMachine.SwitchState(_stateMachine.Current == GameState.PlayerTurn
+				? GameState.BotTurn
+				: GameState.PlayerTurn);
 		}
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace MVC
+namespace Utils.MVC
 {
 	public class View : MonoBehaviour, IObservable<int>
 	{

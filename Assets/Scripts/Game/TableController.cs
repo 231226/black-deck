@@ -1,3 +1,5 @@
+using System;
+using Kernel;
 using UnityEngine;
 using Utils;
 
@@ -10,10 +12,14 @@ namespace Game
 
 		public int CurrentPower { get; private set; }
 
-		public void AddCardById(string id)
+		public event Action TableItemAppeared;
+
+		public void AddTableItemById(string id)
 		{
 			CurrentPower = _cardList.Find(id).Power;
 			_view.AddCard(id);
+
+			TableItemAppeared?.Invoke();
 		}
 	}
 }
