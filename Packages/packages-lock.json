@@ -8,7 +8,7 @@
       "hash": "2e225fb8414e023df2aa3acae2ef225471981316"
     },
     "com.unity.burst": {
-      "version": "1.8.13",
+      "version": "1.8.12",
       "depth": 1,
       "source": "registry",
       "dependencies": {

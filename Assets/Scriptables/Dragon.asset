@@ -17,3 +17,4 @@ MonoBehaviour:
   _art: {fileID: 21300000, guid: 34debc8f5e665a44c823915fbba00a9a, type: 3}
   _rarity: 0
   _power: 15
+  _cost: 2

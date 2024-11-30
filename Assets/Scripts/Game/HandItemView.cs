@@ -12,7 +12,8 @@ namespace Game
 		[SerializeField] private GameObject _back;
 		[SerializeField] private TMP_Text _title;
 		[SerializeField] private Image _art;
-		[SerializeField] private TMP_Text _power;
+		[SerializeField] private TMP_Text _powerText;
+		[SerializeField] private TMP_Text _costText;
 
 		private Vector3 _startPosition;
 
@@ -64,7 +65,8 @@ namespace Game
 			ID = card.ID;
 			_title.SetText(card.CardName);
 			_art.overrideSprite = card.Art;
-			_power.SetText(card.Power.ToString());
+ 			_powerText.SetText(card.Power.ToString());
+			_costText.SetText(card.Cost.ToString());
 		}
 
 		public void Flip()

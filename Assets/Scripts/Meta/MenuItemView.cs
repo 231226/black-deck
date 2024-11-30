@@ -20,8 +20,8 @@ namespace Meta
 		{
 			_id = card.ID;
 			_title.SetText(card.CardName);
-			_art.overrideSprite = card.Art;
 			_power.SetText(card.Power.ToString());
+			_art.overrideSprite = card.Art;
 			_markAsPicked.SetActive(state);
 		}
 
